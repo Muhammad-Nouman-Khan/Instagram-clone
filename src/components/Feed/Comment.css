@@ -9,11 +9,10 @@
 }
 
 .comment__info h4 {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
 }
 
 .comment__info p {
-  margin: 5px 0 0;
-  font-size: 14px;
+  font-size: 12px;
 }

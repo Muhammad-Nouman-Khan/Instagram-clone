@@ -14,10 +14,24 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import Comment from "./Comment";
-const Post = ({ name, description, message, photoUrl, likes, id }) => {
+import { selectUser } from "../../store/userSlice";
+import { useSelector } from "react-redux";
+const Post = ({
+  name,
+  description,
+  message,
+  photoUrl,
+  likes,
+  id,
+  Comments,
+}) => {
+  const user = useSelector(selectUser);
   const [liked, setLiked] = useState(false);
   const [comments, setComments] = useState([]);
   const [commentInput, setCommentInput] = useState("");
+  const [viewCommentSection, setViewCommentSection] = useState(false);
+
+  const viewComments = () => {};
   const handleLike = async () => {
     setLiked(!liked);
   };
@@ -26,10 +40,15 @@ const Post = ({ name, description, message, photoUrl, likes, id }) => {
 
     const commentsRef = collection(db, "posts", id, "comments");
     await addDoc(commentsRef, {
-      name: "Nouman",
+      name: user.displayName,
       message: commentInput,
-      photoUrl: "",
+      photoUrl: user.photoUrl || "",
       timestamp: serverTimestamp(),
+    });
+
+    const postRef = doc(db, "posts", id);
+    await updateDoc(postRef, {
+      Comments: increment(1),
     });
 
     setCommentInput("");
@@ -75,12 +94,25 @@ const Post = ({ name, description, message, photoUrl, likes, id }) => {
         <span style={{ cursor: "pointer" }}>{name}</span>
         {message}
       </p>
-      <p style={{ cursor: "pointer" }}>View all 287 comments</p>
-      <div className="post__comments">
-        {comments.map(({ id, data: { name, message, photoUrl } }) => (
-          <Comment key={id} name={name} message={message} photoUrl={photoUrl} />
-        ))}
-      </div>
+      <p
+        style={{ cursor: "pointer" }}
+        onClick={() => setViewCommentSection(!viewCommentSection)}
+      >
+        View all {Comments} comments
+      </p>
+      {viewCommentSection && (
+        <div className="post__comments">
+          {comments.map(({ id, data: { name, message, photoUrl } }) => (
+            <Comment
+              key={id}
+              name={name}
+              message={message}
+              photoUrl={photoUrl}
+            />
+          ))}
+        </div>
+      )}
+
       <form className="add__comment" onSubmit={sendComment}>
         <input
           value={commentInput}

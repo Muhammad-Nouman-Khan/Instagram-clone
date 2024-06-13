@@ -34,7 +34,10 @@ const Feed = () => {
 
       <div className="posts">
         {posts.map(
-          ({ id, data: { name, description, message, photoUrl, likes } }) => (
+          ({
+            id,
+            data: { name, description, message, photoUrl, likes, Comments },
+          }) => (
             <Post
               key={id}
               id={id}
@@ -43,6 +46,7 @@ const Feed = () => {
               message={message}
               photoUrl={photoUrl}
               likes={likes}
+              Comments={Comments}
             />
           )
         )}

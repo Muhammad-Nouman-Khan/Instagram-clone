@@ -93,3 +93,7 @@
 .post img {
   cursor: pointer;
 }
+
+.post__info > span {
+  margin-right: 5px;
+}

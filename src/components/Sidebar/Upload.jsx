@@ -4,7 +4,11 @@ import ImageIcon from "@mui/icons-material/Image";
 import { db, storage } from "../../firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../store/userSlice";
+
 const Upload = ({ handleClose }) => {
+  const user = useSelector(selectUser);
   const [image, setImage] = useState(null);
   const [input, setInput] = useState("");
   const handleImageChange = (e) => {
@@ -26,18 +30,20 @@ const Upload = ({ handleClose }) => {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           addDoc(collection(db, "posts"), {
-            name: "Nouman",
-            description: "This is a test",
+            name: user.displayName,
+            description: user.email,
             message: input,
             photoUrl: downloadURL,
             timestamp: serverTimestamp(),
             likes: 0,
+            Comments: 0,
           });
         });
       }
     );
     setInput("");
     setImage(null);
+    handleClose();
   };
   return (
     <div className="upload__container">

@@ -1,0 +1,53 @@
+.login {
+  width: 100vw;
+  height: 100vh;
+  background-color: #fff;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.login__container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid lightgray;
+  padding: 100px;
+  gap: 50px;
+}
+.login__container > form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 300px;
+}
+.login__container > form > button {
+  background-color: rgb(0, 128, 150);
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.login__container > form > input {
+  padding: 10px;
+  background-color: rgb(250, 249, 249);
+  color: black;
+  outline: none;
+  border: 1px solid lightgray;
+  font-size: 15px;
+}
+
+.forgot__pass {
+  color: blue;
+  cursor: pointer;
+}
+
+.sign__up {
+  color: rgb(0, 128, 150);
+  font-weight: bolder;
+  cursor: pointer;
+}
+form > p {
+  color: black;
+}

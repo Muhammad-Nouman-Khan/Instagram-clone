@@ -1,0 +1,30 @@
+.widgets {
+  flex: 0.2;
+  padding-top: 20px;
+}
+
+.profiles {
+  display: flex;
+  align-items: center;
+  gap: 1vw;
+  position: relative;
+  padding: 10px 0;
+  cursor: pointer;
+}
+.profiles button {
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  color: rgb(0, 128, 150);
+  font-weight: bolder;
+}
+
+.profiles h2 {
+  font-size: 15px;
+}
+.widgets p {
+  font-size: 13px;
+}

@@ -1,0 +1,12 @@
+.sidebarItem{
+    display: flex;   
+    align-items: center;
+    gap: 1vw;
+    font-size: 20px;
+    cursor: pointer;
+
+}
+
+.sidebarItem img{
+    width: 30px;
+}

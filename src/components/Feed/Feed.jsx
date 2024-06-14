@@ -9,6 +9,7 @@ import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 const Feed = () => {
   const [posts, setPosts] = useState([]);
   useEffect(() => {
+    console.log("FEED USEEFFECT!");
     const postsRef = collection(db, "posts");
     const postsQuery = query(postsRef, orderBy("timestamp", "desc"));
     const unsubsribe = onSnapshot(postsQuery, (querySnapshot) => {
@@ -19,7 +20,7 @@ const Feed = () => {
       setPosts(postData);
     });
     return unsubsribe;
-  }, [posts]);
+  }, []);
   return (
     <div className="feed">
       <div className="stories">

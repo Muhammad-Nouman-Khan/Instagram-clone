@@ -54,6 +54,7 @@ const Post = ({
     setCommentInput("");
   };
   useEffect(() => {
+    console.log("POST USEEFFECT");
     const commentsRef = collection(db, "posts", id, "comments");
     const unsubscribe = onSnapshot(commentsRef, (querySnapshot) => {
       const commentsData = querySnapshot.docs.map((doc) => ({
@@ -63,7 +64,7 @@ const Post = ({
       setComments(commentsData);
     });
     return unsubscribe;
-  }, [id]);
+  }, []);
   return (
     <div className="post">
       <div className="post__header">

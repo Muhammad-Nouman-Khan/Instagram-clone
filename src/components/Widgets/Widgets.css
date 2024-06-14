@@ -1,6 +1,7 @@
 .widgets {
   flex: 0.2;
   padding-top: 20px;
+  margin-right: 30px;
 }
 
 .profiles {
@@ -27,4 +28,10 @@
 }
 .widgets p {
   font-size: 13px;
+}
+
+.widgets__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

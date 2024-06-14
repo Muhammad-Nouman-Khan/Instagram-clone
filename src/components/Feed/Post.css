@@ -97,3 +97,14 @@
 .post__info > span {
   margin-right: 5px;
 }
+
+.post__profileImg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  object-fit: contain;
+}
+
+.hidden {
+  display: none;
+}

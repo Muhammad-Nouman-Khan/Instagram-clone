@@ -14,7 +14,6 @@ const Login = () => {
   const [signUp, setSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [profilePic, setProfilePic] = useState("");
   const dispatch = useDispatch();
@@ -23,8 +22,6 @@ const Login = () => {
     e.preventDefault();
     if (!name) {
       return alert("Please enter your Full Name");
-    } else if (!userName) {
-      return alert("Please enter your Username");
     }
     createUserWithEmailAndPassword(auth, email, password)
       .then((userAuth) => {
@@ -84,14 +81,6 @@ const Login = () => {
           {signUp && (
             <input
               type="text"
-              value={userName}
-              onChange={(e) => setUserName(e.target.value)}
-              placeholder="Username"
-            />
-          )}
-          {signUp && (
-            <input
-              type="text"
               value={profilePic}
               onChange={(e) => setProfilePic(e.target.value)}
               placeholder="Profile pic URL (Optional)"
@@ -113,7 +102,7 @@ const Login = () => {
             </button>
           )}
           {!signUp && <span className="forgot__pass">Forgot password?</span>}
-          <p>
+          <p className="signUp__p">
             {!signUp ? "Don't have an account?" : "Have an account?"}
             <span onClick={() => setSignUp(!signUp)} className="sign__up">
               {!signUp ? "Sign up" : "Sign in"}

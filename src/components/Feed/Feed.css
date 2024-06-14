@@ -12,6 +12,7 @@
   white-space: nowrap;
   padding: 1vw;
   gap: 10px;
+  margin-top: 10px;
 }
 
 .stories::-webkit-scrollbar {

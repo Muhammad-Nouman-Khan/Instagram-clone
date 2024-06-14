@@ -11,50 +11,65 @@ import {
   onSnapshot,
   serverTimestamp,
   updateDoc,
+  arrayRemove,
+  arrayUnion,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import Comment from "./Comment";
 import { selectUser } from "../../store/userSlice";
 import { useSelector } from "react-redux";
+import { useUpload } from "../UploadContext";
 const Post = ({
   name,
-  description,
   message,
   photoUrl,
   likes,
   id,
   Comments,
+  likedBy,
+  profileImg,
 }) => {
+  const { isUploadOpen } = useUpload();
   const user = useSelector(selectUser);
-  const [liked, setLiked] = useState(false);
   const [comments, setComments] = useState([]);
   const [commentInput, setCommentInput] = useState("");
   const [viewCommentSection, setViewCommentSection] = useState(false);
-
+  const userLiked = likedBy?.includes(user?.uid);
   const viewComments = () => {};
   const handleLike = async () => {
-    setLiked(!liked);
+    const postRef = doc(db, "posts", id);
+    if (userLiked) {
+      await updateDoc(postRef, {
+        likes: increment(-1),
+        likedBy: arrayRemove(user.uid),
+      });
+    } else {
+      await updateDoc(postRef, {
+        likes: increment(1),
+        likedBy: arrayUnion(user.uid),
+      });
+    }
   };
   const sendComment = async (e) => {
     e.preventDefault();
+    if (commentInput) {
+      const commentsRef = collection(db, "posts", id, "comments");
+      await addDoc(commentsRef, {
+        name: user.displayName,
+        message: commentInput,
+        photoUrl: user.photoUrl || "",
+        timestamp: serverTimestamp(),
+      });
 
-    const commentsRef = collection(db, "posts", id, "comments");
-    await addDoc(commentsRef, {
-      name: user.displayName,
-      message: commentInput,
-      photoUrl: user.photoUrl || "",
-      timestamp: serverTimestamp(),
-    });
-
-    const postRef = doc(db, "posts", id);
-    await updateDoc(postRef, {
-      Comments: increment(1),
-    });
+      const postRef = doc(db, "posts", id);
+      await updateDoc(postRef, {
+        Comments: increment(1),
+      });
+    }
 
     setCommentInput("");
   };
   useEffect(() => {
-    console.log("POST USEEFFECT");
     const commentsRef = collection(db, "posts", id, "comments");
     const unsubscribe = onSnapshot(commentsRef, (querySnapshot) => {
       const commentsData = querySnapshot.docs.map((doc) => ({
@@ -67,21 +82,24 @@ const Post = ({
   }, []);
   return (
     <div className="post">
-      <div className="post__header">
+      <div className={`post__header ${isUploadOpen ? "hidden" : ""}`}>
         <Avatar
-          style={{ width: "40px", height: "40px" }}
-          src=""
+          style={{ width: "40px", height: "40px", zIndex: "1" }}
+          src={profileImg}
           className="post__profileImg"
-        />
+        >
+          {name[0]}
+        </Avatar>
         <h2 style={{ cursor: "pointer" }}>{name}</h2>
       </div>
       <img className="post__img" src={photoUrl} alt="" />
-      <div className="actions">
+
+      <div className={`actions ${isUploadOpen ? "hidden" : ""}`}>
         <div className="like__icon" onClick={handleLike}>
-          {liked ? (
+          {userLiked ? (
             <FavoriteIcon className="heart__icon" style={{ fill: "red" }} />
           ) : (
-            <img onClick={handleLike} src={heart} alt="" />
+            <img src={heart} alt="" />
           )}
         </div>
         <img src={comment} alt="" />

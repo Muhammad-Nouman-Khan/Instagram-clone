@@ -5,7 +5,10 @@ import { profile } from "../../assets/assets";
 import { useDispatch } from "react-redux";
 import { logout } from "../../store/userSlice";
 import { auth } from "../../firebase";
-const Widgets = ({ name, email }) => {
+import amazon from "../../assets/amazon.jpeg";
+import google from "../../assets/google.jpeg";
+import Logo from "../../assets/Logo.png";
+const Widgets = ({ name, email, pic }) => {
   const dispatch = useDispatch();
   const logoutOfApp = () => {
     dispatch(logout());
@@ -18,10 +21,17 @@ const Widgets = ({ name, email }) => {
         console.error("Error signing out:", error.message);
       });
   };
+
   return (
     <div className="widgets">
       <div className="profiles">
-        <Avatar src={profile} />
+        <Avatar
+          className="widgets__avatar"
+          style={{ fontSize: "20px" }}
+          src={pic}
+        >
+          {name ? name[0] : ""}
+        </Avatar>
         <div className="name">
           <h2>{name}</h2>
           <p>{email}</p>
@@ -32,7 +42,7 @@ const Widgets = ({ name, email }) => {
         Suggested for you
       </p>
       <div className="profiles">
-        <Avatar />
+        <Avatar src={amazon} />
         <div className="name">
           <h2>Amazon</h2>
           <p>@amazon</p>
@@ -40,7 +50,7 @@ const Widgets = ({ name, email }) => {
         <button>Follow</button>
       </div>
       <div className="profiles">
-        <Avatar />
+        <Avatar src={google} />
         <div className="name">
           <h2>Google</h2>
           <p>@google</p>
@@ -48,10 +58,10 @@ const Widgets = ({ name, email }) => {
         <button>Follow</button>
       </div>
       <div className="profiles">
-        <Avatar />
+        <Avatar src={Logo} />
         <div className="name">
-          <h2>Apple</h2>
-          <p>@apple</p>
+          <h2>LinkedIn</h2>
+          <p>@linkedin</p>
         </div>
         <button>Follow</button>
       </div>

@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Login from "./components/Login/Login";
 import { login, logout, selectUser } from "./store/userSlice";
 import { auth } from "./firebase";
+import { UploadProvider } from "./components/UploadContext";
 const App = () => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
@@ -34,11 +35,17 @@ const App = () => {
       {!user ? (
         <Login />
       ) : (
-        <div className="container">
-          <Sidebar />
-          <Feed />
-          <Widgets name={user.displayName} email={user.email} />
-        </div>
+        <UploadProvider>
+          <div className="container">
+            <Sidebar />
+            <Feed />
+            <Widgets
+              name={user.displayName}
+              email={user.email}
+              pic={user.photoUrl}
+            />
+          </div>
+        </UploadProvider>
       )}
     </>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Upload.css";
 import ImageIcon from "@mui/icons-material/Image";
 import { db, storage } from "../../firebase";
@@ -6,8 +6,10 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/userSlice";
+import { useUpload } from "../UploadContext";
 
-const Upload = ({ handleClose }) => {
+const Upload = () => {
+  const { isUploadOpen, closeUploadBar } = useUpload();
   const user = useSelector(selectUser);
   const [image, setImage] = useState(null);
   const [input, setInput] = useState("");
@@ -37,18 +39,28 @@ const Upload = ({ handleClose }) => {
             timestamp: serverTimestamp(),
             likes: 0,
             Comments: 0,
+            likedBy: [],
+            profileImg: user.photoUrl,
           });
         });
       }
     );
     setInput("");
     setImage(null);
-    handleClose();
+    closeUploadBar();
   };
+  useEffect(() => {
+    if (!isUploadOpen) {
+      setImage(null);
+    }
+  }, [isUploadOpen]);
+
+  if (!isUploadOpen) return null;
+
   return (
     <div className="upload__container">
       <div className="upload__content">
-        <span className="upload__close" onClick={handleClose}>
+        <span className="upload__close" onClick={closeUploadBar}>
           &times;
         </span>
         <h2>Create new post</h2>
@@ -65,6 +77,7 @@ const Upload = ({ handleClose }) => {
             className="file_upload_input"
             onChange={handleImageChange}
           />
+          {image && <p>{image.name}</p>}
           {image && (
             <input
               value={input}
@@ -75,7 +88,7 @@ const Upload = ({ handleClose }) => {
             />
           )}
           {image && <button onClick={handleUpload}>Upload</button>}
-          <button onClick={handleClose}>Close</button>
+          <button onClick={closeUploadBar}>Close</button>
         </div>
       </div>
     </div>

@@ -2,17 +2,30 @@
   display: flex;
   align-items: center;
   padding: 10px 0;
+  overflow: auto;
 }
 
 .comment__info {
   margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
 
 .comment__info h4 {
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 600;
 }
 
 .comment__info p {
-  font-size: 12px;
+  font-size: 14px;
+}
+.comment__profileImg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.comment .hidden {
+  display: none;
 }

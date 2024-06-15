@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./Sidebar.css";
 import { Avatar } from "@mui/material";
 import { useSelector } from "react-redux";
-import { selectUser } from "../../store/userSlice";
+import { logout, selectUser } from "../../store/userSlice";
 import {
   create,
   explore,
@@ -20,11 +20,24 @@ import {
 import { useUpload } from "../UploadContext";
 import SidebarItem from "./SidebarItem";
 import Upload from "./Upload";
-
+import { useDispatch } from "react-redux";
+import { auth } from "../../firebase";
 const Sidebar = () => {
   const { openUploadBar } = useUpload();
 
   const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+  const logoutOfApp = () => {
+    dispatch(logout());
+    auth
+      .signOut()
+      .then(() => {
+        console.log("User logged out successfully");
+      })
+      .catch((error) => {
+        console.error("Error signing out:", error.message);
+      });
+  };
 
   return (
     <div className="sidebar">
@@ -38,6 +51,7 @@ const Sidebar = () => {
       <SidebarItem onClick={openUploadBar} image={create} title="Create" />
       <div className="sidebarItem">
         <Avatar
+          onClick={logoutOfApp}
           style={{
             width: "30px",
             height: "30px",
